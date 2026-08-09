@@ -1,5 +1,89 @@
 <div align="center">
 
+# Escapement Core
+
+### A governed AI execution core for software delivery
+
+**The model reasons. Escapement governs execution.**
+
+</div>
+
+---
+
+## Repository lineage
+
+Escapement Core is an **independent repository derived from Escapement v1
+history**. It was created by cloning v1 with full Git history preserved
+and pushing to a new remote.
+
+There is deliberately **no GitHub fork relationship**. PRs must not
+default upstream, and the repository must remain freely private-able.
+
+```text
+Escapement
+├── Escapement Core          this repository — independent, derived from v1
+│   ├── governed runtime
+│   ├── AI agent
+│   ├── MCP server
+│   └── MCP client
+│
+└── Continuum                research programme; architecture frozen
+```
+
+- **[Escapement v1](https://github.com/SiddheshKGupta/Escapement)** remains
+  the independent stable baseline. It is not deprecated and is not
+  waiting to be replaced by this repository. Core diverges independently.
+- **[Continuum](https://github.com/SiddheshKGupta/Escapement-Continuum)**
+  is a research programme whose Phase I architecture is frozen and whose
+  distinguishing claim did not survive adversarial specification. Core
+  inherits its *lessons*, not its machinery.
+
+Commits before the divergence point are v1's history, retained so the
+origin of every mechanism stays traceable.
+
+## Status
+
+```text
+Phase                 Core Readiness (pre-implementation)
+Visibility            PRIVATE
+Execution path        NONE — by design, see ADR-001
+Model autonomy        NONE
+```
+
+Core is private until Core Readiness and the first governed execution
+path have received independent review.
+
+## The governing invariant
+
+> **Governance precedes execution; execution precedes autonomy.**
+
+```text
+Effect Gate   exists before
+Executor      exists before
+Model         can propose executable actions
+```
+
+No commit may introduce an ungoverned model-controlled execution path.
+See [ADR-001](docs/decisions/ADR-001-governance-precedes-execution.md).
+
+v1 has no model-to-effect path at all, which means Core can establish
+governance *before* autonomous execution exists — rather than retrofitting
+safety around a working agent loop. That advantage is fragile and is
+protected by an ADR rather than a preference.
+
+## Where to start
+
+- [`docs/core/CORE_READINESS_GAP_ANALYSIS.md`](docs/core/CORE_READINESS_GAP_ANALYSIS.md)
+  — what v1 already provides, the twelve gaps, and the migration ordering
+- [`docs/decisions/ADR-001-governance-precedes-execution.md`](docs/decisions/ADR-001-governance-precedes-execution.md)
+
+---
+
+<details>
+<summary>Escapement v1 README, retained from the derivation point</summary>
+
+<div align="center">
+
 # Escapement
 
 ### A governed execution harness for AI-assisted software delivery
@@ -604,3 +688,6 @@ That division is deliberate, and it is part of the thesis rather than a disclaim
 Governed execution. Explicit evidence. Durable project state.
 
 </div>
+
+
+</details>
