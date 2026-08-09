@@ -62,11 +62,26 @@ dispatch (`escapement.py doctor` re-invoking a sibling script), plus one
 `["git", "ls-files"]`. Those are fixed argv with no interpolation and are
 not an effect surface in the relevant sense.
 
-### NETWORK — clean
+### NETWORK — no egress, but one inbound listener
 
-No egress primitives. The only `urllib` import is `urllib.parse` in
-`local_viewer.py` for parsing, not fetching. This part of the original
-claim holds.
+> **Corrected on second pass.** The first version of this section said
+> "clean," which was a smaller instance of the same overclaim it was
+> written to fix. There is no *egress* — no `requests`, `httpx` or
+> `urlopen`, and the only `urllib` import is `urllib.parse` for parsing.
+> But `local_viewer.py` runs a `ThreadingHTTPServer`, which is a network
+> surface even though nothing dials out.
+
+```text
+scripts/local_viewer.py:138
+  ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+  token = secrets.token_urlsafe(24)   # required on every request
+```
+
+Loopback-bound and gated on a 24-byte URL-safe token generated per run —
+this is competently built and is **not** presented as a finding. It is
+recorded because "no network primitives" and "no network egress" are
+different claims, and only the second one is true. An auditor writing
+the first would have missed a listening socket.
 
 ### FILESYSTEM — present everywhere, audit incomplete
 
@@ -76,6 +91,49 @@ expected — the runtime persists JSON records — but **no path-confinement
 analysis has been done**, and "the tool writes where it is told" is not
 the same as "the tool cannot be told to write anywhere." Marked
 incomplete rather than passed.
+
+## Classification by effect class and entry point
+
+Searching for `subprocess` finds subprocesses. Classifying effects and
+tracing them to callable entry points finds the surface. The latter is
+what the threat model quantifies over.
+
+```text
+ENTRY POINT            PROC  FS_W  FS_DEL  NET  DESER
+run_check.py             2     3      -      -     -
+codex_resources.py       8     1      -      -     2
+escapement.py           12     6      -      -     2
+agent_runtime.py         -    13      1      -     6
+program_modules.py       -     1      1      -     1
+local_viewer.py          -     -      -      1     2
+ablation_harness.py      1     3      -      -     -
+security_gate.py         1     2      -      -     -
+ui_quality_gate.py       1     -      -      -     -
+eval_harness.py          -     4      -      -     -
+feature_list.py          -     1      -      -     -
+capability_audit.py      -     2      -      -     -
+```
+
+14 files expose `main()`; `escapement.py` alone dispatches 28
+subcommands. Every one of these is callable by an agent with a shell,
+which in every supported host it has.
+
+The target classification for v0.2, matching the effect classes the gate
+will need:
+
+```text
+FILESYSTEM_READ  FILESYSTEM_WRITE  PROCESS_EXECUTION  NETWORK
+CREDENTIAL_ACCESS  REPOSITORY_MUTATION  EXTERNAL_SIDE_EFFECT  DESTRUCTIVE
+```
+
+`DESERIALIZATION` is tracked separately above because it is an *attack*
+surface rather than an effect class — it is where untrusted T4 input
+reaches a parser, which matters for the threat model even though it
+causes no effect by itself.
+
+**This audit should become a doctor check**, so the claim is
+re-verified per commit rather than asserted once in prose. That it was
+asserted once in prose is the entire reason this document exists.
 
 ## The honest reformulation
 

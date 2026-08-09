@@ -21,6 +21,11 @@
 > at which routing an effect through the recorder stops being optional.
 > The ordering invariant is *more* necessary under the corrected facts,
 > not less.
+>
+> **The rationale is permanently restated as:** v1 does not own a
+> mandatory model-to-effect mediation boundary, and Core must not
+> introduce autonomous execution that can bypass one. That claim
+> survives the audit. The one it replaces did not.
 
 Escapement v1 has **no model-to-effect path**. Verified at the commit
 this repository was derived from:

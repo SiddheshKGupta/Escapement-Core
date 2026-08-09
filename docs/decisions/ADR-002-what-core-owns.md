@@ -72,13 +72,29 @@ and transport are **imported**.
 > RESEARCH EXTENSION      P
 > ```
 >
-> One thing this sharpens rather than softens: `K` is *not* optional.
-> `L+V+T+E` without `K` is approximately v1 and AGET, which exist;
-> `E+P` without `K` is approximately Self-Harness, which exists. Every
-> configuration lacking `K` is already occupied by prior art. So `K` is
-> necessary for differentiation though not sufficient — and Core v1 can
-> now justify its existence without the self-improvement research
-> succeeding, which is a strictly better position.
+> One thing this sharpens rather than softens: every configuration
+> lacking `K` is already occupied by prior art — `L+V+T+E` without `K`
+> is approximately v1 and AGET; `E+P` without `K` is approximately
+> Self-Harness. And Core v1 can now justify its existence without the
+> self-improvement research succeeding, which is a strictly better
+> position.
+>
+> > **CORRECTED — a category mistake.** I wrote from the above that
+> > "`K` is necessary for differentiation," which silently converts an
+> > architectural necessity into an ownership claim. Those are different
+> > propositions:
+> >
+> > ```text
+> > does the SYSTEM need mandatory effect mediation?   almost certainly yes
+> > must ESCAPEMENT IMPLEMENT that mediation?          UNPROVEN
+> > ```
+> >
+> > `Escapement semantics + AGT + host sandbox + an external
+> > authorization kernel` may supply the `K` property adequately. The
+> > corrected statement: **mandatory effect mediation is necessary to
+> > Core's target properties; whether Escapement must implement it is an
+> > empirical integration question.** EXPERIMENT_CORE_000 exists to
+> > answer it, and nothing in this ADR presumes the answer.
 
 **D2 — The effect boundary is enforced by capability token, not by type
 alone.** *(SUPERSEDED by [ADR-003](ADR-003-kernel-worker-separation.md) —

@@ -91,10 +91,23 @@ I6  PASS expected     version control
 I7  UNSCORED          requires a second host; out of scope for v0
 ```
 
-Predicted result: **five pass, two fail (I2, I4)**. If that holds, Core's
-justified surface is the episode record and the promotion boundary —
-`E` and the promotion half of `K` — and *not* an executor, since I1
-passing means the host's execution path is adequately governed.
+Predicted result: **five pass, two fail (I2, I4)**.
+
+> **SUPERSEDED by
+> [EXPERIMENT_CORE_000_PREREGISTRATION.md](../core/EXPERIMENT_CORE_000_PREREGISTRATION.md),
+> which is the binding preregistration.** Two corrections. The
+> predictions above were revised *before the run* on the strength of the
+> effect surface audit — now 3 pass, 5 fail, 1 unscored, with I1/S1
+> moving from PASS to FAIL because host permissions mediate the host's
+> own tools, not 28 CLI subcommands an agent can invoke through a shell.
+>
+> More importantly, the inference that followed was **invalid**: it
+> jumped from "invariant failed" straight to "Core must own it." S2
+> failing could be answered by a normalizer over host events; S4 failing
+> by a protected branch and an external evaluation service. Neither
+> requires Escapement to own anything. Every failure now walks a
+> four-rung reduction ladder, and the "Core must own?" column stays
+> `TBD` until after reduction.
 
 **A prediction of two failures is itself a hypothesis and may be wrong
 in the direction that costs us more.** If I2 and I4 also pass, Core
