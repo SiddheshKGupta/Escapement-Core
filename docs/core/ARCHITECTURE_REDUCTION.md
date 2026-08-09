@@ -219,9 +219,11 @@ P  LEARNING & PROMOTION  which episodes are eligible to teach, and who
                          = items 8 + 10
 ```
 
-The dependency runs E → P → K in build order but K → P → E in trust
-order, and the trust direction is the invariant: P cannot weaken K, and
-E cannot cause an effect.
+> **AMENDED — the trust arrow is deleted.** `P` consumes `E`, so
+> evidence flows `E → P`. One word was carrying three distinct flows;
+> see ADR-002 D1. What survives is narrower and still true: **P cannot
+> weaken K, and E cannot cause an effect.** `P` is also an extension
+> rather than a pillar — `L+V+T+K+E` is a coherent product without it.
 
 **But K/E/P is what Core must invent, not what Core is.** Stated as
 "Core is three components" it writes v1's earned semantics out of Core's

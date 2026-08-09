@@ -6,6 +6,22 @@
 
 ## Context
 
+> **CORRECTED 2026-08-09 — the context below was false. The decision
+> stands; its justification does not.** See
+> [EFFECT_SURFACE_AUDIT.md](../core/EFFECT_SURFACE_AUDIT.md). The grep
+> covered 3 patterns across 2 of 14 files; widened, it returns 47
+> matches in 7 files, including `run_check.py --shell`, the repository's
+> one `shell=True` site, which executes a caller-supplied string whose
+> only safeguard is the word "trusted" in its help text. Core did not
+> start from a clean slate — it inherited an ungoverned path in the
+> clone. The corrected position: **v1 adds no execution capability
+> beyond what its host already grants the model**, and its runner
+> records effects rather than authorising them. Core's differentiator is
+> therefore not that governance came first, but that Core is the point
+> at which routing an effect through the recorder stops being optional.
+> The ordering invariant is *more* necessary under the corrected facts,
+> not less.
+
 Escapement v1 has **no model-to-effect path**. Verified at the commit
 this repository was derived from:
 

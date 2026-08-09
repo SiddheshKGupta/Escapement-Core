@@ -34,6 +34,40 @@ between records is an id, never a pointer.
 
 ## 2. Record kinds and axes
 
+> **REOPENED on independent review — this section is now known wrong.**
+> The caveat in §10 Q1 was raised and then not acted on. Pushed, the
+> conclusion is forced: `authority` is not orthogonal across all five
+> kinds. `OBSERVATION + APPROVED` has no meaning; `EVIDENCE + REVOKED`
+> is worse. One universal record with one universal authority axis is
+> the wrong shape, and keeping it would repeat the exact error already
+> rejected in the four-dimension proposal — a sum type modelled as a
+> product type.
+>
+> The replacement is a **tagged union** plus separate entities:
+>
+> ```text
+> Observation   provenance, observed_at, validity
+> Inference     derived_from, validity
+> Requirement   authority_ref, validity
+> Decision      authority_ref, validity
+>
+> EvidenceArtifact  producer, digest, subject_refs, relation, validity
+>                   relations: SUPPORTS | FALSIFIES | VERIFIES | DERIVED_FROM
+>                   -- has provenance and validity; has NO authority axis
+>
+> AuthorizationEvent / AuthorityGrant / AuthorityRevocation
+>                   -- authority is an EVENT, not a field on a record
+> ```
+>
+> Note what this does to §2.1: if authority is an event stream rather
+> than a mutable field, "authority-at-time vs authority-now" stops being
+> a rule to remember and becomes a consequence of the representation.
+> The record holds `authority_ref`; the events say what happened to it.
+> That is the better fix and it supersedes §2.1's prose rule.
+>
+> v0.2 must adopt the tagged union. The flat form below is retained
+> only so the change is legible.
+
 Adopting the refinement in your §7, with one caveat recorded in §10.
 
 ```text
@@ -182,6 +216,28 @@ about.
 
 ## 5. Learning eligibility — mechanically decidable, or UNRESOLVED
 
+> **AMENDED — split into three questions, not one.** The section below
+> conflates *can this episode enter the corpus* with *can this episode
+> support this conclusion*. Only the first is mechanical.
+>
+> ```text
+> A  CORPUS ADMISSION    fully deterministic; the table below
+>                        -> ADMISSIBLE_POSITIVE | ADMISSIBLE_NEGATIVE
+>                           INADMISSIBLE | UNRESOLVED
+> B  PROPOSAL GENERATION model-driven and allowed to be wrong; a bad
+>                        diagnosis only yields a candidate the gate rejects
+> C  PROMOTION CREDIT    fresh prospective evaluation, candidate vs frozen
+>                        baseline, same versioned environment
+> ```
+>
+> This dissolves the environment-comparability problem rather than
+> displacing it, which is what the §5 rewrite actually did. **Historical
+> episodes are proposal substrate; credit comes from fresh held-out
+> evaluation.** Stop asking historical traces to carry causal weight they
+> cannot bear. The verdict names below should become `ADMISSIBLE_*` in
+> v0.2, since "eligible" was overloaded to mean both admission and
+> credit.
+
 This is the section I would most want an independent reviewer to attack,
 because it is where a judgment call would quietly reintroduce
 self-certification.
@@ -250,10 +306,30 @@ storage.
 
 ## 6. Mutable zones
 
+> **AMENDED — "verification procedures" was too broad for Zone A** (this
+> was Q7 in the handoff and the answer is that it does not survive).
+> Verification splits across all three zones, governed by a monotonic
+> rule:
+>
+> ```text
+> A  verification suggestions, test selection hints, optional extra
+>    checks, diagnostic probes
+> B  verifier implementations, verification adapters and orchestration,
+>    new testing strategies
+> C  what evidence counts, minimum required verification, closure
+>    semantics, eligibility semantics, promotion sufficiency
+> ```
+>
+> **Ordinary learning may add optional verification. It may never remove
+> or weaken constitutionally required verification.** Without that rule
+> Zone A rewrites Zone C by the back door: a learned change to a
+> verification procedure changes what counts as verified, which changes
+> admission, which changes what may teach Core.
+
 ```text
 ZONE A  self-improvable
         skills, prompts, routing hints, context heuristics,
-        decomposition patterns, verification procedures, tool strategies
+        decomposition patterns, verification SUGGESTIONS, tool strategies
 
 ZONE B  restricted evolution -- stronger evaluation required
         routing algorithms, learning algorithm, budget allocation,

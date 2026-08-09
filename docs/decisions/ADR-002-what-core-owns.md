@@ -47,7 +47,38 @@ P  LEARNING & PROMOTION  what may teach Core, what may change, what ships
 ```
 
 Orchestration, policy breadth, identity, sandboxing, replay semantics
-and transport are **imported**. Trust flows K → P → E and never back.
+and transport are **imported**.
+
+> **AMENDED on independent review.** Two errors here.
+>
+> **"Trust flows K → P → E and never back" is deleted.** `P` consumes
+> `E`, so evidence necessarily flows `E → P`. One word was carrying
+> three distinct flows — exactly the collapse Continuum was supposed to
+> have taught us:
+>
+> ```text
+> AUTHORITY  operator/policy -> K -> {worker, promotion}
+> EVIDENCE   worker -> events -> E -> P
+> CHANGE     P proposes -> K/promotion gate -> mutable worker surface
+> ```
+>
+> **K/E/P is not irreducible, and `P` is an extension, not a pillar.**
+> Remove `P` and `L+V+T+K+E` is still a coherent product: a governed
+> delivery runtime producing verified execution episodes. `P` depends on
+> `E`; `E` does not depend on `P`; `K` does not require `P`.
+>
+> ```text
+> CORE BASE               L + V + T + K + E
+> RESEARCH EXTENSION      P
+> ```
+>
+> One thing this sharpens rather than softens: `K` is *not* optional.
+> `L+V+T+E` without `K` is approximately v1 and AGET, which exist;
+> `E+P` without `K` is approximately Self-Harness, which exists. Every
+> configuration lacking `K` is already occupied by prior art. So `K` is
+> necessary for differentiation though not sufficient — and Core v1 can
+> now justify its existence without the self-improvement research
+> succeeding, which is a strictly better position.
 
 **D2 — The effect boundary is enforced by capability token, not by type
 alone.** *(SUPERSEDED by [ADR-003](ADR-003-kernel-worker-separation.md) —

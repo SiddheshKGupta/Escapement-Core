@@ -1,11 +1,20 @@
 # ADR-003 — Trusted kernel, untrusted worker
 
 ```text
-STATUS    Accepted, with two unresolved design problems (§4, §5)
+STATUS    PROPOSED -- downgraded from Accepted 2026-08-09
+BLOCKED   ON  a threat model, and one enforceable isolation profile
 DATE      2026-08-09
 AMENDS    ADR-002 D2 (graduated enforcement)
 SUPPORTS  ADR-001 (governance precedes execution)
 ```
+
+> **Downgraded on independent review.** A trust boundary without an
+> adversary model is underspecified, and this ADR was accepted without
+> one. It also names a *mechanism* ("process separation") where it
+> should name a *property*. Both are corrected in §6 below, and the
+> status stays `PROPOSED` until `CORE_THREAT_MODEL_v0.1.md` exists and
+> at least one platform isolation profile is shown to satisfy the
+> property on paper.
 
 ## Context
 
@@ -121,6 +130,50 @@ C  kernel mints short-lived, narrowly-scoped, per-action credentials
 C is the right default with a B fallback for credentials that cannot be
 narrowed. It needs deciding before the first executor, because it
 determines whether the kernel has an egress stack.
+
+## 6. Corrections from independent review
+
+**The constitutional invariant is a property, not a mechanism.**
+"Different PID" is not the invariant, and neither is "container".
+Windows checks `OpenProcess` against the target's security descriptor
+and `SeDebugPrivilege` can override it; Linux Yama's behaviour depends
+on configuration; Landlock's own documentation warns that namespaces are
+not fine-grained access control. So the required property is:
+
+> The untrusted worker cannot read or modify kernel memory or state,
+> inherit privileged handles, access kernel-held credentials,
+> impersonate kernel authority, or reach filesystem and network
+> resources except through explicitly granted capability surfaces.
+
+Mechanism becomes a pluggable `IsolationBackend` — AppContainer or
+equivalent on Windows, privilege separation plus `no_new_privs`, ptrace
+restrictions and seccomp/Landlock on Linux, a VM where the stakes
+justify it. **If no available backend satisfies the property, Core
+refuses untrusted autonomous execution or enters an explicitly labelled
+unsafe development mode.** It does not proceed quietly on a weaker
+boundary.
+
+**§5's credential problem has a fourth option, and it is the right
+one: a privileged capability broker.** The kernel authorises; a separate
+privileged broker holds the broad secret and exposes only a narrow
+operation surface; the worker never holds a secret at all.
+
+```text
+kernel (authorisation only) -> receipt -> worker -> broker -> provider
+                                                    holds the secret
+```
+
+This supersedes the A/B/C framing above. Provider-native scoped
+credentials are preferred where they exist; the broker covers
+third-party keys that cannot be narrowed. Crucially it keeps the
+protocol-speaking code *out* of the kernel, so the trusted computing
+base stays small — which was the objection to option B. A broker is
+itself a new trust class and needs its own boundary in the threat model.
+
+**Time-of-check/time-of-use is unhandled.** An authorisation valid at
+issue can be invalid at execution, and `authorize A → modify A →
+execute A'` is currently possible. Receipts must bind an exact action
+digest, plus expiry, nonce, policy version, and one-shot semantics.
 
 ## Alternatives rejected
 
