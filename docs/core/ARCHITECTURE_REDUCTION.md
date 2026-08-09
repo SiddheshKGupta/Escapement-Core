@@ -201,12 +201,12 @@ new code and semantics, has already **built** it in v1, or should
 | 9 | Bounded editable harness surface | **OWN** — a manifest and a check |
 | 10 | Regression / adversarial promotion gate | **OWN** the composition only |
 
-Three are already built. One is designed. One is cut. Five remain — and
-those five are three subsystems, because 4+6 are one artifact and 9+10
-are one gate.
+Three are already built. One is designed. One is deferred. Five remain
+— and those five are three subsystems, because 4+6 are one artifact and
+9+10 are one gate.
 
 ```text
-K  AUTHORITY KERNEL      what may act, with what scope,
+K  CONSTITUTIONAL KERNEL what may act, with what scope,
                          and what the learning plane may never touch
                          = items 3 + 9
 
@@ -214,16 +214,32 @@ E  EPISODE RECORD        the verified-episode schema, and closure
                          carrying evidence for effects as well as checks
                          = items 6 + 4
 
-P  PROMOTION             which episodes are eligible to teach, and who
+P  LEARNING & PROMOTION  which episodes are eligible to teach, and who
                          certifies an improvement -- never the improver
                          = items 8 + 10
 ```
 
-**K, E, P.** Everything else is migrated from v1 or imported.
-
 The dependency runs E → P → K in build order but K → P → E in trust
 order, and the trust direction is the invariant: P cannot weaken K, and
 E cannot cause an effect.
+
+**But K/E/P is what Core must invent, not what Core is.** Stated as
+"Core is three components" it writes v1's earned semantics out of Core's
+identity, which is both inaccurate and a weaker story. The full picture
+is six responsibilities, three of them already paid for:
+
+```text
+INHERITED     L  delivery lifecycle
+              V  verification and evidence-backed closure
+              T  test discipline: causal sensitivity, mutation,
+                 independent verification
+
+NEW           K  constitutional kernel
+              E  episode and evidence model
+              P  learning and promotion
+```
+
+Three things need inventing. Three major things are already earned.
 
 ### 4.1 What "import" means concretely
 
@@ -239,9 +255,20 @@ tool transport                     MCP 2026-07-28
 
 ---
 
-## 5. The cut: Core v1 is depth-1
+## 5. The deferral: Core v1 is depth-1
 
-Recursive autonomy should leave the critical path entirely.
+> **RULED 2026-08-09 — deferred, not cut.** This section proposed
+> removing recursion and demoting it to "two schema fields." The ruling
+> accepts the deferral and rejects the removal: recursion re-enters
+> later as a **routed execution strategy** that must beat the direct
+> baseline on verified outcomes per task class, with the Learning Plane
+> deciding where it has historically helped. `RLM != Core` and
+> `RLM != learning`. See ADR-002 D3. The argument below stands as the
+> case for keeping it out of the *first* milestone; it does not support
+> the stronger claim that recursion is not part of Core's architecture.
+
+Recursive autonomy should leave the critical path of the first
+milestone.
 
 The research question is whether a delivery agent can improve its
 execution policy from verified experience while structurally unable to
@@ -298,7 +325,9 @@ we cannot support.
 
 ## 7. Language discipline
 
-**"Proof-carrying" is retired. "Evidence-carrying" only.**
+**"Proof-carrying" is retired. In technical documentation the term is
+"verified execution episodes"; "evidence-carrying delivery" is
+acceptable in prose.**
 
 Proof-carrying code is a real formal artifact (Necula, 1997) shipping
 machine-checkable proofs against a stated safety policy. Core will ship

@@ -1,10 +1,13 @@
 # ADR-002 — What Escapement Core owns
 
 ```text
-STATUS    Proposed -- one decision needs your ruling (D3)
+STATUS    Accepted, as amended 2026-08-09
 DATE      2026-08-09
 CONTEXT   docs/core/ARCHITECTURE_REDUCTION.md
 SUPPORTS  ADR-001 (governance precedes execution)
+AMENDED   D1 restated (six responsibilities, three of them inherited)
+          D2 superseded by ADR-003 (process boundary, not HMAC)
+          D3 ruled: DEFERRED, not cut
 ```
 
 ## Context
@@ -22,23 +25,35 @@ and semantics remain after everything importable is imported.
 
 ## Decisions
 
-**D1 — Core owns three subsystems, not ten items.**
+**D1 — Core has six responsibilities. Three are new; three are already
+earned.** *(restated 2026-08-09)*
+
+The original wording — "Core owns three subsystems" — was a reduction of
+what must be *invented*, and reads as a description of what Core *is*.
+It is not: it writes v1's earned semantics out of Core's own identity.
 
 ```text
-K  AUTHORITY KERNEL   what may act, with what scope, and what the
-                      learning plane may never modify
-E  EPISODE RECORD     the verified-episode schema, and closure carrying
-                      evidence for effects as well as checks
-P  PROMOTION          which episodes may teach, and who certifies an
-                      improvement -- never the improver
+INHERITED FOUNDATION -- already earned by v1, migrated not reinvented
+
+L  DELIVERY LIFECYCLE   Specify -> Route -> Execute -> Verify -> Persist
+V  VERIFICATION/CLOSURE evidence-backed completion; assertion is not PASS
+T  TEST DISCIPLINE      causal sensitivity, mutation, independent review
+
+NEW CORE SEMANTICS -- the three differentiating responsibilities
+
+K  CONSTITUTIONAL KERNEL authority, effect governance, promotion boundary
+E  EPISODE/EVIDENCE      what happened, why, cost, result, verification
+P  LEARNING & PROMOTION  what may teach Core, what may change, what ships
 ```
 
-Lifecycle semantics, evidence-carrying closure and mutation discipline
-are **inherited from v1**, not invented. Orchestration, policy breadth,
-identity, sandboxing, replay semantics and transport are **imported**.
+Orchestration, policy breadth, identity, sandboxing, replay semantics
+and transport are **imported**. Trust flows K → P → E and never back.
 
 **D2 — The effect boundary is enforced by capability token, not by type
-alone.**
+alone.** *(SUPERSEDED by [ADR-003](ADR-003-kernel-worker-separation.md) —
+the process boundary is the trust boundary, and it is designed before
+the first executor rather than deferred behind it. The retraction below
+stands; the remedy does not go far enough.)*
 
 Retracts the gap analysis claim that a Python type makes bypass
 structurally impossible. It does not: Python has no private
@@ -51,16 +66,40 @@ Enforcement is graduated: static type for ergonomics, HMAC capability
 token for runtime, process separation as the documented upgrade path.
 The token lands **with** the gate — an advisory gate is not a gate.
 
-**D3 — Core v1 is depth-1. Recursive autonomy is cut.** *(needs your
-ruling)*
+**D3 — Recursive execution is DEFERRED and architecturally reserved, not
+cut.** *(ruled 2026-08-09; amends the proposal below)*
 
-Recursion is absent from the research question, occupies the most
+The proposal was to cut recursion outright. The ruling accepts the
+deferral and rejects the removal, and the distinction is real: "reduced
+to two schema fields" would have quietly decided that recursion is not
+part of Core's long-term architecture, which is a larger claim than the
+evidence supports and not one the first hypothesis requires either way.
+
+Recursion is absent from the first research question, occupies the most
 crowded prior art, has contested benefit in a published reproduction,
-and carries the highest build cost of anything on the list.
-`parent_episode_id` and `authority_scope` are reserved in the schema so
-depth-N is a later addition rather than a migration.
+and carries the highest build cost on the list — so it is out of the
+first autonomous milestone. But it is not out of Core.
 
-This reverses part of the proposed Pillar 3, so it is yours to overrule.
+```text
+ExecutionStrategy = DIRECT | RLM | RECURSIVE_HARNESS
+
+RLM != Core          it is a strategy Core may route to
+RLM != learning      the Learning Plane decides when it has helped
+```
+
+Recursion re-enters as a **routed execution strategy that must beat the
+direct baseline on verified outcomes**, per task class, at a promotion
+scope no wider than the evidence supports. That is a stronger position
+than baking it into the kernel: it makes recursion falsifiable rather
+than assumed, and it is the same admission discipline Continuum earned.
+
+Sequence: direct Core → governed execution → verified episodes →
+learning and promotion → direct baseline established → recursion
+admitted as a strategy → direct vs recursive comparison.
+
+Reserved from the first episode ever recorded, never backfilled:
+`parent_episode_id`, `authority_scope`, and the delegated-authority and
+resource fields.
 
 **D4 — Learning is per-model.**
 
