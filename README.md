@@ -88,6 +88,7 @@ Governed external resources:  67
 Unit tests:                   189
 Routing evaluations:          122
 Repository files:             296
+Invoked skill context:        <= 1,000 words
 ```
 
 ```bash
