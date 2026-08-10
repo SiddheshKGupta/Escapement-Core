@@ -306,6 +306,23 @@ observed != inferred != decided != authorized
 differently from generic agent frameworks, which typically pass a
 loosely-typed tool call straight from model output to a dispatcher.
 
+> **RETRACTED — see [ARCHITECTURE_REDUCTION.md](ARCHITECTURE_REDUCTION.md) §2.**
+> Both sentences above are wrong. It is not novel: Parallax (arXiv
+> 2604.12986) has cognitive-executive separation as its central thesis,
+> and the Unfireable Safety Kernel (arXiv 2606.26057) enforces the same
+> boundary with process separation and signed evidence. More seriously,
+> **`executor.execute(proposal)` does not fail at runtime in Python** —
+> there are no private constructors, and `__new__`, `copy`,
+> `dataclasses.replace` and pickle all reach around one.
+> `AuthorizedAction` is a mypy lint, not a structural guarantee, and
+> presenting a lint as a guarantee is the defect class independent
+> review caught twice in Continuum. Superseded by graduated enforcement
+> (static type + HMAC capability token + process separation) per
+> ADR-002 D2. The three enforcement tests below remain required but are
+> insufficient on their own: add a test that constructing
+> `AuthorizedAction` via `__new__` and via pickle round-trip yields an
+> object the executor **rejects**.
+
 ### The chokepoint
 
 ```text
