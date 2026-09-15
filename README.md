@@ -87,7 +87,7 @@ Capability strengths:         58
 Governed external resources:  67
 Unit tests:                   189
 Routing evaluations:          122
-Repository files:             296
+Repository files:             297
 Invoked skill context:        <= 1,000 words
 ```
 
