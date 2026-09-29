@@ -85,9 +85,9 @@ Continuum  researches what Core still cannot solve
 Native skills:                35
 Capability strengths:         58
 Governed external resources:  67
-Unit tests:                   189
+Unit tests:                   196
 Routing evaluations:          122
-Repository files:             297
+Repository files:             298
 Invoked skill context:        <= 1,000 words
 ```
 

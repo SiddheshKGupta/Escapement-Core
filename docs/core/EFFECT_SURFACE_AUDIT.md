@@ -34,6 +34,17 @@ before an external reviewer caught it.
 
 ### EXECUTION — a general-purpose path exists
 
+> **CORRECTED 2026-09-29 — the `--shell` path below no longer exists in
+> Core.** It was removed in v1 (Escapement PR #60, commit `65a064e`) and
+> ported here: `run_check.py` takes argv only and always runs with
+> `shell=False`, and `feature_list.py` rejects shell metacharacters and
+> splits the command to argv instead of forwarding it as a string. No
+> `shell=True` remains in `scripts/`. The finding is left as written
+> because it was true at the fork point. The argv path, and
+> `codex_resources.py`'s caller-supplied `Popen`, still execute without
+> authorization — removing the shell narrowed the surface, it did not
+> put a gate in front of it.
+
 ```text
 scripts/run_check.py
   --shell "<arbitrary string>"   -> subprocess.run(..., shell=True)
